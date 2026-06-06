@@ -14,6 +14,7 @@ import {
 import { Apartment, Booking, DashboardStats, Kitchen } from '../types';
 import { auth } from '../firebase/config';
 import { onAuthStateChanged, User } from 'firebase/auth';
+import { DEFAULT_APARTMENTS, DEFAULT_KITCHENS } from '../firebase/inventorySeed';
 
 export function useRealtimeBookings() {
   const [bookings, setBookings] = useState<Booking[]>([]);
@@ -48,10 +49,23 @@ export function useFirebaseApollo() {
 
     const unsubApartments = subscribeToApartments(items => {
       setApartments(items);
+      if (items.length === 0) {
+        setApartments(DEFAULT_APARTMENTS.map((ap, idx) => ({ 
+          ...ap, 
+          id: `apartment-${idx + 1}`,
+          createdAt: { seconds: 0, nanoseconds: 0 }
+        } as Apartment)));
+      }
       markLoaded();
     });
     const unsubKitchens = subscribeToKitchens(items => {
       setKitchens(items);
+      if (items.length === 0) {
+        setKitchens(DEFAULT_KITCHENS.map((k, idx) => ({ 
+          ...k, 
+          id: `kitchen-${idx + 1}` 
+        } as Kitchen)));
+      }
       markLoaded();
     });
     const unsubBookings = subscribeToBookings(items => {
@@ -71,7 +85,6 @@ export function useFirebaseApollo() {
     const maybeSeed = async () => {
       if (seededRef.current) return;
       if (!user || user.email?.trim().toLowerCase() !== 'meetanselm@gmail.com') return;
-      if (apartments.length > 0 || kitchens.length > 0) return;
       seededRef.current = true;
       try {
         await seedInventoryIfEmpty();

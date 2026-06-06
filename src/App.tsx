@@ -245,7 +245,8 @@ export default function App() {
 
   const rooms = React.useMemo(() => {
     if (dbService.isUsingFirebase()) {
-      return apartments.map(mapApartmentToRoom);
+      // If Firestore has apartments, map them; otherwise fall back to INITIAL_ROOMS
+      return apartments.length > 0 ? apartments.map(mapApartmentToRoom) : dbService.getRooms();
     }
 
     return dbService.getRooms();
