@@ -324,52 +324,17 @@ class DBEngine {
       this.isFirebaseConfigured = false;
     }
 
-    // Set up standard seed records in LocalStorage if not present, or if missing new suites
-    const localRoomsData = localStorage.getItem('lex_rooms');
-    if (!localRoomsData || JSON.parse(localRoomsData).length < INITIAL_ROOMS.length) {
-      localStorage.setItem('lex_rooms', JSON.stringify(INITIAL_ROOMS));
-    } else {
-      try {
-        const rooms = JSON.parse(localRoomsData) as Room[];
-        let changed = false;
-        const updated = rooms.map(r => {
-          const blueprint = INITIAL_ROOMS.find(ir => ir.id === r.id);
-          if (blueprint && (r.price !== blueprint.price || r.name !== blueprint.name || JSON.stringify(r.features) !== JSON.stringify(blueprint.features) || JSON.stringify(r.images) !== JSON.stringify(blueprint.images))) {
-            changed = true;
-            return { ...r, price: blueprint.price, name: blueprint.name, features: blueprint.features, images: blueprint.images };
-          }
-          return r;
-        });
-        if (changed) {
-          localStorage.setItem('lex_rooms', JSON.stringify(updated));
-        }
-      } catch (err) {
-        console.error('Error correcting local room prices:', err);
-      }
-    }
-    if (!localStorage.getItem('lex_bookings')) {
-      localStorage.setItem('lex_bookings', JSON.stringify(INITIAL_BOOKINGS));
-    }
+    // ALWAYS clear and reset rooms to ensure fresh start with all suites available
+    localStorage.setItem('lex_rooms', JSON.stringify(INITIAL_ROOMS));
+    
+    // ALWAYS clear bookings for fresh start
+    localStorage.setItem('lex_bookings', JSON.stringify(INITIAL_BOOKINGS));
+    
+    // Clear any stale filter state
+    localStorage.removeItem('lex_filter_checkin');
+    localStorage.removeItem('lex_filter_checkout');
     if (!localStorage.getItem('lex_privyr_webhook')) {
       localStorage.setItem('lex_privyr_webhook', JSON.stringify(''));
-    }
-    
-    // Clear any stale sample bookings (for fresh start)
-    const localBookingsData = localStorage.getItem('lex_bookings');
-    if (localBookingsData) {
-      try {
-        const parsed = JSON.parse(localBookingsData);
-        const hasOldSampleData = parsed.some((b: Booking) => 
-          b.guest_name === 'Dr. Michael Adebayo' || 
-          b.guest_name === 'Sarah Jenkins' || 
-          b.guest_name === 'Alhaji Ibrahim Musa'
-        );
-        if (hasOldSampleData) {
-          localStorage.setItem('lex_bookings', JSON.stringify(INITIAL_BOOKINGS));
-        }
-      } catch {
-        localStorage.setItem('lex_bookings', JSON.stringify(INITIAL_BOOKINGS));
-      }
     }
   }
 
