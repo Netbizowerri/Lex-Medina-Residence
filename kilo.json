@@ -1,0 +1,10 @@
+{
+  "version": 2,
+  "Skills": [],
+  "commands": [
+    { "name": "firebase-setup", "location": ".kilo/commands/firebase-setup.md" }
+  ],
+  "agents": [
+    { "name": "firebase-specialist", "location": ".kilo/agents/firebase-specialist.md" }
+  ]
+}

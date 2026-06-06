@@ -1,0 +1,6 @@
+{
+  "name": "Lex Medicina Residence",
+  "description": "Premium luxury stay and boutique short-let residence in Gwarinpa, Abuja, featuring an in-app booking engine, real-time availability, and admin management console.",
+  "requestFramePermissions": ["geolocation"],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}

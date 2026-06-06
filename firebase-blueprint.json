@@ -1,0 +1,49 @@
+{
+  "entities": {
+    "Room": {
+      "title": "Room",
+      "description": "Luxurious Suite or Penthouse Room in Lex Medicina Residence",
+      "type": "object",
+      "properties": {
+        "id": { "type": "string", "description": "Unique room identity" },
+        "name": { "type": "string", "description": "Full display name of the suite" },
+        "type": { "type": "string", "enum": ["executive", "royal", "presidential"], "description": "Suite hierarchy tier" },
+        "price": { "type": "number", "description": "Price per night in NGN" },
+        "is_available": { "type": "boolean", "description": "Current inventory occupancy lock state" },
+        "features": { "type": "array", "description": "List of premium featured tags" },
+        "images": { "type": "array", "description": "Suite image gallery relative paths" },
+        "max_guests": { "type": "number", "description": "Maximum number of aligned occupants" },
+        "description": { "type": "string", "description": "Elegant suite layout detailed overview" }
+      },
+      "required": ["id", "name", "type", "price", "is_available", "max_guests", "description"]
+    },
+    "Booking": {
+      "title": "Booking",
+      "description": "Sovereign guest reservation for a suite stay",
+      "type": "object",
+      "properties": {
+        "id": { "type": "string", "description": "Unique booking reservation code" },
+        "guest_name": { "type": "string", "description": "Full formal name of the guest" },
+        "guest_email": { "type": "string", "format": "email", "description": "Secure email address of the guest" },
+        "guest_phone": { "type": "string", "description": "Contact phone number of the guest" },
+        "room_id": { "type": "string", "description": "Target room suite reference ID" },
+        "check_in": { "type": "string", "description": "ISO format check-in arrival date" },
+        "check_out": { "type": "string", "description": "ISO format check-out departure date" },
+        "payment_status": { "type": "string", "enum": ["pending", "paid", "failed"], "description": "Naira transactional state" },
+        "amount_paid": { "type": "number", "description": "Direct total amount processed in NGN" },
+        "created_at": { "type": "string", "description": "Timestamp of reservation creation" }
+      },
+      "required": ["id", "guest_name", "guest_email", "guest_phone", "room_id", "check_in", "check_out", "payment_status", "amount_paid", "created_at"]
+    }
+  },
+  "firestore": {
+    "/rooms/{roomId}": {
+      "schema": "Room",
+      "description": "Store state records of all suite listings"
+    },
+    "/bookings/{bookingId}": {
+      "schema": "Booking",
+      "description": "Store all corporate stay listings and leads"
+    }
+  }
+}

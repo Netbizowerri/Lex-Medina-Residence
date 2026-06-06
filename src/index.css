@@ -1,0 +1,73 @@
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Playfair+Display:ital,wght@0,400;0,500;0,600;0,700;1,400&family=Space+Grotesk:wght@400;500;600&display=swap');
+@import "tailwindcss";
+
+@theme {
+  --font-serif: "Playfair Display", Georgia, serif;
+  --font-sans: "Inter", system-ui, -apple-system, sans-serif;
+  --font-display: "Space Grotesk", sans-serif;
+  
+  --color-gold-50: #121212;
+  --color-gold-100: #1a1a1a;
+  --color-gold-200: rgba(255, 255, 255, 0.08);
+  --color-gold-300: #d97706;
+  --color-gold-400: #f59e0b;
+  --color-gold-500: #d97706;
+  --color-gold-600: #f59e0b;
+  --color-gold-700: #b45309;
+  
+  --color-luxury-charcoal: #F5F5F0;
+  --color-luxury-slate: #161616;
+  --color-luxury-cashmere: #0A0A0A;
+}
+
+/* Custom visual utilities for smooth interaction */
+html {
+  scroll-behavior: smooth;
+  font-family: var(--font-sans);
+  background-color: var(--color-luxury-cashmere);
+  color: var(--color-luxury-charcoal);
+}
+
+body {
+  overflow-x: hidden;
+  background-color: #0A0A0A;
+}
+
+::-webkit-scrollbar {
+  width: 6px;
+}
+::-webkit-scrollbar-track {
+  background: #0A0A0A;
+}
+::-webkit-scrollbar-thumb {
+  background: rgba(255, 255, 255, 0.15);
+  border-radius: 3px;
+}
+::-webkit-scrollbar-thumb:hover {
+  background: #d97706;
+}
+
+.luxury-text-gradient {
+  background: linear-gradient(135deg, #121212 0%, #b58537 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+.luxury-gold-gradient {
+  background: linear-gradient(135deg, #e8d7b3 0%, #b58537 100%);
+}
+
+.luxury-glow {
+  box-shadow: 0 4px 30px rgba(181, 133, 55, 0.15);
+}
+
+/* Page transitions styling */
+.page-enter {
+  opacity: 0;
+  transform: translateY(10px);
+}
+.page-enter-active {
+  opacity: 1;
+  transform: translateY(0);
+  transition: opacity 0.4s ease, transform 0.4s ease;
+}

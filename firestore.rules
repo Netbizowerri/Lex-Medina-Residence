@@ -1,0 +1,61 @@
+rules_version = '2';
+service cloud.firestore {
+  match /databases/{database}/documents {
+
+    function isSignedIn() {
+      return request.auth != null;
+    }
+
+    function isOwner() {
+      return isSignedIn() && request.auth.token.email == 'meetanselm@gmail.com';
+    }
+
+    function isValidId(id) {
+      return id is string && id.size() <= 128 && id.matches('^[a-zA-Z0-9_-]+$');
+    }
+
+    function isValidApartment(data) {
+      return data.keys().hasAll(['id','title','description','price','media','features','status'])
+        && data.title is string && data.title.size() <= 200
+        && data.description is string && data.description.size() <= 2000
+        && data.price is number && data.price >= 0
+        && data.media is list && data.media.size() <= 20
+        && data.features is list && data.features.size() <= 50
+        && data.status is string && data.status in ['available', 'occupied', 'maintenance'];
+    }
+
+    function isValidKitchen(data) {
+      return data.keys().hasAll(['id','name','serviceType','image','menuLink'])
+        && data.name is string && data.name.size() <= 200
+        && data.serviceType is string && data.serviceType.size() <= 200
+        && data.image is string && data.image.size() <= 1000
+        && data.menuLink is string && data.menuLink.size() <= 1000;
+    }
+
+    function isValidBooking(data) {
+      return data.keys().hasAll(['guestName','email','roomId','checkIn','checkOut','paid','privyrSynced'])
+        && data.guestName is string && data.guestName.size() >= 2 && data.guestName.size() <= 200
+        && data.email is string && data.email.size() >= 5 && data.email.size() <= 320
+        && data.roomId is string && data.roomId.size() <= 128
+        && data.checkIn is timestamp
+        && data.checkOut is timestamp
+        && data.paid is bool
+        && data.privyrSynced is bool;
+    }
+
+    match /apartments/{apartmentId} {
+      allow get, list: if true;
+      allow create, update, delete: if isValidId(apartmentId) && isOwner() && (request.method == 'delete' || isValidApartment(request.resource.data));
+    }
+
+    match /kitchens/{kitchenId} {
+      allow get, list: if true;
+      allow create, update, delete: if isValidId(kitchenId) && isOwner() && (request.method == 'delete' || isValidKitchen(request.resource.data));
+    }
+
+    match /bookings/{bookingId} {
+      allow create: if isValidId(bookingId) && isValidBooking(request.resource.data);
+      allow get, list, update, delete: if isOwner() && (request.method == 'delete' || isValidBooking(request.resource.data));
+    }
+  }
+}
