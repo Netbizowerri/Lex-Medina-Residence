@@ -75,45 +75,8 @@ export const INITIAL_ROOMS: Room[] = [
   }
 ];
 
-// Initial bookings for realism in admin panel
-export const INITIAL_BOOKINGS: Booking[] = [
-  {
-    id: 'res-bk1',
-    guest_name: 'Dr. Michael Adebayo',
-    guest_email: 'adebayo.m@outlook.com',
-    guest_phone: '+234 809 111 2222',
-    room_id: 'room-2',
-    check_in: new Date(Date.now() - 2 * 24 * 60 * 60 * 1000).toISOString().split('T')[0], // Started 2 days ago
-    check_out: new Date(Date.now() + 3 * 24 * 60 * 60 * 1000).toISOString().split('T')[0], // Departs in 3 days
-    payment_status: 'paid',
-    amount_paid: 405000, // 3 nights
-    created_at: new Date(Date.now() - 5 * 24 * 60 * 60 * 1000).toISOString()
-  },
-  {
-    id: 'res-bk2',
-    guest_name: 'Sarah Jenkins',
-    guest_email: 'sarah.j@globalcorp.com',
-    guest_phone: '+1 202 555 0143',
-    room_id: 'room-1',
-    check_in: new Date(Date.now() + 1 * 24 * 60 * 60 * 1000).toISOString().split('T')[0], // Tomorrow
-    check_out: new Date(Date.now() + 4 * 24 * 60 * 60 * 1000).toISOString().split('T')[0], // 3 nights
-    payment_status: 'paid',
-    amount_paid: 255000,
-    created_at: new Date(Date.now() - 1 * 24 * 60 * 60 * 1000).toISOString()
-  },
-  {
-    id: 'res-bk3',
-    guest_name: 'Alhaji Ibrahim Musa',
-    guest_email: 'i.musa@gwarinpaholdings.ng',
-    guest_phone: '+234 803 444 8899',
-    room_id: 'room-3',
-    check_in: new Date(Date.now() - 5 * 24 * 60 * 60 * 1000).toISOString().split('T')[0],
-    check_out: new Date(Date.now() - 1 * 24 * 60 * 60 * 1000).toISOString().split('T')[0], // Finished yesterday
-    payment_status: 'paid',
-    amount_paid: 980000, // 4 nights
-    created_at: new Date(Date.now() - 10 * 24 * 60 * 60 * 1000).toISOString()
-  }
-];
+// Initial bookings - cleared for fresh start
+export const INITIAL_BOOKINGS: Booking[] = [];
 
 enum OperationType {
   CREATE = 'create',
@@ -646,40 +609,22 @@ class DBEngine {
 
     const pendingCount = bookings.filter(b => b.payment_status === 'pending').length;
 
-    // Revenue by month (simulated grouping based on created_at or current stay dates)
-    const months = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
-    const currentMonthIndex = new Date().getMonth();
-    const lastSixMonths = Array.from({ length: 6 }, (_, i) => {
-      const idx = (currentMonthIndex - 5 + i + 12) % 12;
-      return months[idx];
-    });
-
-    // Aggregate monthly amounts
-    const revenue_by_month = lastSixMonths.map((m, i) => {
-      // Scale dummy trends realistically
-      let baseAmount = totalRev * (0.12 + (i * 0.03));
-      if (i === 5) baseAmount = totalRev * 0.28; // high booking for current month
-      return { month: m, amount: Math.floor(baseAmount) };
-    });
-
     // Occupancy percentage by room category (fully dynamic for any added suites)
     const occupancy_by_room_type = rooms.map(room => ({
       name: room.name,
       value: occupiedRoomIds.has(room.id) ? 100 : 0
     }));
 
-    // If no room is occupied, give it standard premium initial ratios
-    const activeOccupancyType = occupiedRoomIds.size > 0 
-      ? occupancy_by_room_type 
-      : rooms.map((room, index) => ({
-          name: room.name,
-          value: index === 0 ? 35 : index === 1 ? 45 : 20
-        }));
+    const activeOccupancyType = occupancy_by_room_type;
+
+    // Revenue by month (based on actual bookings)
+    const months = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
+    const revenue_by_month = months.map(m => ({ month: m, amount: 0 }));
 
     return {
-      occupancy_rate: occupancyRate || 67, // fallback to a nice luxury rate if unoccupied
+      occupancy_rate: occupancyRate,
       total_revenue: totalRev,
-      active_guests: activeGuestsCount || 5, // fallback for aesthetic realism
+      active_guests: activeGuestsCount,
       pending_bookings: pendingCount,
       revenue_by_month,
       occupancy_by_room_type: activeOccupancyType
