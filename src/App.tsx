@@ -590,21 +590,21 @@ export default function App() {
                   </button>
                 </div>
 
-                <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-                  {dbService.isUsingFirebase() && !publicCatalogReady ? (
-                    <div className="col-span-full rounded-md border border-white/10 bg-white/5 p-8 text-center text-sm text-white/60">
-                      Syncing apartment inventory from Firestore...
-                    </div>
-                  ) : (
-                    rooms.slice(0, 3).map((room) => (
-                      <RoomCard
-                        key={room.id}
-                        room={room}
-                        onSelect={(rm) => setSelectedRoom(rm)}
-                      />
-                    ))
-                  )}
-                </div>
+<div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                   {dbService.isUsingFirebase() && !publicCatalogReady ? (
+                     <div className="col-span-full rounded-md border border-white/10 bg-white/5 p-8 text-center text-sm text-white/60">
+                       Syncing apartment inventory from Firestore...
+                     </div>
+                   ) : (
+                     rooms.map((room) => (
+                       <RoomCard
+                         key={room.id}
+                         room={room}
+                         onSelect={(rm) => setSelectedRoom(rm)}
+                       />
+                     ))
+                   )}
+                 </div>
               </section>
 
               {/* CURATED LUXURY GALLERY CAROUSEL */}
