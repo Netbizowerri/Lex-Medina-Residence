@@ -490,6 +490,9 @@ class DBEngine {
     const bookings = this.getBookings();
     bookings.push(newBooking);
     localStorage.setItem('lex_bookings', JSON.stringify(bookings));
+    
+    // Dispatch storage event to notify listeners (AdminPanel)
+    window.dispatchEvent(new Event('storage'));
 
     if (this.isFirebaseConfigured && this.firestoreDb) {
       this.writeBookingToFirestore(newBooking);

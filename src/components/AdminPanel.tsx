@@ -58,6 +58,13 @@ export function AdminPanel({ setTab, adminEmail }: AdminPanelProps) {
   // Load state upon mount
   useEffect(() => {
     refreshDatabaseState();
+    
+    // Listen for storage changes from other tabs or components
+    const handleStorageChange = () => {
+      refreshDatabaseState();
+    };
+    window.addEventListener('storage', handleStorageChange);
+    return () => window.removeEventListener('storage', handleStorageChange);
   }, []);
 
   const refreshDatabaseState = () => {
