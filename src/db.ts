@@ -515,15 +515,7 @@ class DBEngine {
     return true;
   }
 
-  // CRM Webhook Logic
-  public getPrivyrWebhook(): string {
-    return JSON.parse(localStorage.getItem('lex_privyr_webhook') || '""');
-  }
-
-  public savePrivyrWebhook(url: string) {
-    localStorage.setItem('lex_privyr_webhook', JSON.stringify(url));
-  }
-
+// CRM Webhook Logic - notify via Formspree
   public async sendToPrivyr(booking: Booking) {
     const webhookUrl = this.getPrivyrWebhook();
     // Default webhook details for Nigerian boutique CRM sync
@@ -539,11 +531,24 @@ class DBEngine {
     };
 
     console.log('📤 CRM Sync Triggered for booking:', booking.id);
-    console.log('Payload for Privyr:', payload);
+    console.log('Payload for Formspree:', payload);
 
+    // Send to Formspree default endpoint
+    try {
+      const formspreeRes = await fetch('https://formspree.io/f/meewedoo', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(payload)
+      });
+      const formspreeData = await formspreeRes.json();
+      console.log('✅ Formspree Response:', formspreeData);
+    } catch (err) {
+      console.error('❌ Formspree request failed:', err);
+    }
+
+    // Also send to configured Privyr webhook if set
     if (webhookUrl) {
       try {
-        // Send a real request
         const res = await fetch('/api/crm/webhook', {
           method: 'POST',
           headers: { 'Content-Type': 'application/json' },
@@ -552,11 +557,17 @@ class DBEngine {
         const respData = await res.json();
         console.log('✅ Real CRM Response:', respData);
       } catch (err) {
-        console.error('❌ Real CRM request failed, backup simulator active:', err);
+        console.error('❌ Real CRM request failed:', err);
       }
-    } else {
-      console.warn('⚠️ No Privyr Webhook URL configured! Stored check out lead as pending sync.');
     }
+  }
+
+  public savePrivyrWebhook(url: string) {
+    localStorage.setItem('lex_privyr_webhook', JSON.stringify(url));
+  }
+
+  public getPrivyrWebhook(): string {
+    return JSON.parse(localStorage.getItem('lex_privyr_webhook') || '""');
   }
 
   // DASHBOARD ANALYTICS SERVICE
