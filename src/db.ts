@@ -353,6 +353,24 @@ class DBEngine {
     if (!localStorage.getItem('lex_privyr_webhook')) {
       localStorage.setItem('lex_privyr_webhook', JSON.stringify(''));
     }
+    
+    // Clear any stale sample bookings (for fresh start)
+    const localBookingsData = localStorage.getItem('lex_bookings');
+    if (localBookingsData) {
+      try {
+        const parsed = JSON.parse(localBookingsData);
+        const hasOldSampleData = parsed.some((b: Booking) => 
+          b.guest_name === 'Dr. Michael Adebayo' || 
+          b.guest_name === 'Sarah Jenkins' || 
+          b.guest_name === 'Alhaji Ibrahim Musa'
+        );
+        if (hasOldSampleData) {
+          localStorage.setItem('lex_bookings', JSON.stringify(INITIAL_BOOKINGS));
+        }
+      } catch {
+        localStorage.setItem('lex_bookings', JSON.stringify(INITIAL_BOOKINGS));
+      }
+    }
   }
 
   public isUsingFirebase(): boolean {
