@@ -253,7 +253,12 @@ export default function App() {
   const rooms = React.useMemo(() => {
     if (dbService.isUsingFirebase()) {
       // If Firestore has apartments, map them; otherwise fall back to INITIAL_ROOMS
-      return apartments.length > 0 ? apartments.map(mapApartmentToRoom) : dbService.getRooms();
+      if (apartments.length > 0) {
+        return apartments
+          .map(mapApartmentToRoom)
+          .sort((a, b) => a.price === b.price ? a.id.localeCompare(b.id) : a.price - b.price);
+      }
+      return dbService.getRooms();
     }
 
     return dbService.getRooms();

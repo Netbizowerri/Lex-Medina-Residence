@@ -30,17 +30,6 @@ export const INITIAL_ROOMS: Room[] = [
     description: 'A majestic suite adorned with deep charcoal oak paneling, custom gold accents, and expansive private lounge amenities. Ideal for travelers searching for refined luxury, secure Gwarinpa tranquility, and access to both high-end kitchen facilities.'
   },
   {
-    id: 'room-3',
-    name: 'London',
-    type: 'executive',
-    price: 30000, // NGN per night
-    is_available: true,
-    max_guests: 3,
-    features: ['High-speed Wi-Fi', 'Smart TV & AC', 'Refrigerator', 'Wide Sitting Space'],
-    images: ['https://i.ibb.co/0jJJK77h/ok-1-1-1.png'],
-    description: 'The pinnacle of Lex Medicina luxury. A sprawling top-floor penthouse offering panoramic views of Gwarinpa, a state-of-the-art entertainment lounge, dedicated study, and elite personalization of all services, including a private resident pantry.'
-  },
-  {
     id: 'room-4',
     name: 'Toronto',
     type: 'executive',
@@ -61,6 +50,17 @@ export const INITIAL_ROOMS: Room[] = [
     features: ['High-speed Wi-Fi', 'Smart TV & AC', '24/7 Power', 'Mini Refrigerator'],
     images: ['https://i.ibb.co/svGc1zJr/BELIZE-ROOM-1.png'],
     description: 'An elegant retreat featuring premium velvet lounge chairs, high-contrast stone floors, and a dedicated sitting room for holding private consultations. Includes full culinary rights on the primary chef kitchen.'
+  },
+  {
+    id: 'room-3',
+    name: 'London',
+    type: 'executive',
+    price: 30000, // NGN per night
+    is_available: true,
+    max_guests: 3,
+    features: ['High-speed Wi-Fi', 'Smart TV & AC', 'Refrigerator', 'Wide Sitting Space'],
+    images: ['https://i.ibb.co/0jJJK77h/ok-1-1-1.png'],
+    description: 'The pinnacle of Lex Medicina luxury. A sprawling top-floor penthouse offering panoramic views of Gwarinpa, a state-of-the-art entertainment lounge, dedicated study, and elite personalization of all services, including a private resident pantry.'
   },
   {
     id: 'room-6',

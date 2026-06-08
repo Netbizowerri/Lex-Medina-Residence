@@ -18,14 +18,6 @@ export const DEFAULT_APARTMENTS: Array<Omit<Apartment, 'id' | 'createdAt'>> = [
     status: 'available'
   },
   {
-    title: 'London',
-    description: 'The pinnacle top-flight master suite containing state-of-the-art studies and private resident pantry entry.',
-    price: 30000,
-    media: [{ type: 'image', url: 'https://i.ibb.co/0jJJK77h/ok-1-1-1.png' }],
-    features: ['High-speed Wi-Fi', 'Smart TV & AC', 'Refrigerator', 'Wide Sitting Space'],
-    status: 'available'
-  },
-  {
     title: 'Toronto',
     description: 'A contemporary executive suite beautifully detailed with leather accents and high-contrast brass elements.',
     price: 25000,
@@ -39,6 +31,14 @@ export const DEFAULT_APARTMENTS: Array<Omit<Apartment, 'id' | 'createdAt'>> = [
     price: 25000,
     media: [{ type: 'image', url: 'https://i.ibb.co/svGc1zJr/BELIZE-ROOM-1.png' }],
     features: ['High-speed Wi-Fi', 'Smart TV & AC', '24/7 Power', 'Mini Refrigerator'],
+    status: 'available'
+  },
+  {
+    title: 'London',
+    description: 'The pinnacle top-flight master suite containing state-of-the-art studies and private resident pantry entry.',
+    price: 30000,
+    media: [{ type: 'image', url: 'https://i.ibb.co/0jJJK77h/ok-1-1-1.png' }],
+    features: ['High-speed Wi-Fi', 'Smart TV & AC', 'Refrigerator', 'Wide Sitting Space'],
     status: 'available'
   },
   {
