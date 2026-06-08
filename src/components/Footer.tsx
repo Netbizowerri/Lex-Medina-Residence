@@ -17,7 +17,7 @@ export function Footer({ setTab }: FooterProps) {
               Lex Medicina
             </span>
             <p className="text-gray-500 text-sm leading-relaxed font-light">
-              An elite, design-centric boutique residence nestled within Gwarinpa, Abuja. Serving corporate delegates and healthcare practitioners with high-end, secure, and private luxury.
+              An elite, design-centric boutique residence nestled within Gwarinpa, Abuja. Serving corporate delegates with high-end, secure, and private luxury.
             </p>
             <div className="flex items-center gap-2 mt-2">
               <HeartHandshake className="w-4 h-4 text-gold-600" />
@@ -40,7 +40,7 @@ export function Footer({ setTab }: FooterProps) {
               </li>
               <li>
                 <button onClick={() => setTab('rooms')} className="hover:text-gold-600 transition-colors cursor-pointer text-left">
-                  Suites & Pricing
+                  Rooms & Pricing
                 </button>
               </li>
               <li>
@@ -90,7 +90,7 @@ export function Footer({ setTab }: FooterProps) {
               <li className="flex items-start gap-3">
                 <MapPin className="w-5 h-5 text-gold-600 shrink-0 mt-0.5" />
                 <span className="leading-relaxed text-gray-600">
-                  House 36, Claude Ake Street (142 Road), Off Road, Gwarinpa Estate, Gwarinpa, Abuja, Nigeria.
+                  House 36, Claude Ake Street (142 Road), Off 14 Road, Gwarinpa Estate, Gwarinpa, Abuja, Nigeria.
                 </span>
               </li>
               <li className="flex items-center gap-3">

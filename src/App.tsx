@@ -38,37 +38,37 @@ const GALLERY_IMAGES = [
   },
   {
     url: 'https://i.ibb.co/C5B6dtK8/ROOM-2.png',
-    title: 'Beijing Room',
+    title: 'Beijing',
     category: 'Executive Luxury Room',
     description: 'An exquisitely styled room featuring a king-sized plush bed, soft ambient lighting, and rich corporate comfort.'
   },
   {
     url: 'https://i.ibb.co/whXDrrHW/LAS-VEGAS-ROOM.png',
-    title: 'Las Vegas Room',
+    title: 'Las Vegas',
     category: 'Executive Luxury Room',
     description: 'A majestic executive space with dramatic charcoal oak panels, sleek brass details, and deep relaxation lounges.'
   },
   {
     url: 'https://i.ibb.co/0jJJK77h/ok-1-1-1.png',
-    title: 'London Penthouse Suite',
-    category: 'Grand Master Suite',
+    title: 'London',
+    category: 'Executive Luxury Room',
     description: 'The pinnacle top-flight master suite containing state-of-the-art studies and private resident pantry entry.'
   },
   {
     url: 'https://i.ibb.co/bg2FDP8C/THIS-1.png',
-    title: 'Toronto Room',
+    title: 'Toronto',
     category: 'Executive Luxury Room',
     description: 'A contemporary executive suite beautifully detailed with leather accents and high-contrast brass elements.'
   },
   {
     url: 'https://i.ibb.co/svGc1zJr/BELIZE-ROOM-1.png',
-    title: 'Belize Room',
+    title: 'Belize',
     category: 'Executive Luxury Room',
     description: 'An elegant retreat featuring premium velvet lounge chairs, high-contrast stone floors, and absolute privacy.'
   },
   {
     url: 'https://i.ibb.co/pBpJrGtM/suite-1.png',
-    title: 'New York Suite',
+    title: 'New York',
     category: 'Grand Master Suite',
     description: 'A spectacular double-room penthouse configuration styled with deep forest velvet and walnut detailing.'
   },
@@ -125,6 +125,13 @@ export default function App() {
   const [recentBooking, setRecentBooking] = useState<Booking | null>(null);
   const [showScrollTop, setShowScrollTop] = useState(false);
   const { apartments, kitchens, bookings: firestoreBookings, loading: catalogLoading } = useFirebaseApollo();
+
+  // URL-based admin login routing: /adminlogin path opens admin panel
+  useEffect(() => {
+    if (window.location.pathname.toLowerCase() === '/adminlogin') {
+      setTab('admin-login');
+    }
+  }, []);
 
   // Automatically reset viewport to top when any tab is chosen
   useEffect(() => {
@@ -259,7 +266,7 @@ export default function App() {
     let result = rooms;
 
     if (filterType !== 'all') {
-      result = result.filter(r => r.type === filterType);
+      result = result.filter(r => r.id === filterType);
     }
     
     result = result.filter(r => r.max_guests >= filterGuests);
@@ -438,7 +445,7 @@ export default function App() {
                     transition={{ duration: 1, delay: 0.4 }}
                     className="font-sans text-gray-300 text-sm sm:text-base font-light max-w-2xl mx-auto leading-relaxed"
                   >
-                    A secure, fully serviced residence designed for extended stays, featuring uninterrupted power, advanced protection, and personalized concierge support. Enjoy the freedom of a fully equipped kitchen for self-catering, with effortless access to curated meal delivery whenever desired.
+                    A secure, fully serviced residence designed for extended stays and shortlets, featuring uninterrupted power, advanced protection, and personalized concierge support. Enjoy the freedom of a fully equipped kitchen for self-catering, with effortless access to curated meal delivery whenever desired.
                   </motion.p>
 
                   <motion.div
@@ -469,16 +476,17 @@ export default function App() {
                   
                   <div>
                     <label className="block text-[10px] uppercase tracking-widest text-gold-400 font-display mb-1.5 font-bold">
-                      Suite Class
+                      Select Room
                     </label>
                     <select
                       value={filterType}
                       onChange={(e) => setFilterType(e.target.value)}
                       className="w-full bg-[#161616] border border-white/10 py-2 px-3 text-xs text-white rounded focus:outline-none focus:border-gold-400"
                     >
-                      <option value="all">All Available Suites</option>
-                      <option value="executive">Executive</option>
-                      <option value="suite">Suite</option>
+                      <option value="all">All Rooms</option>
+                      {rooms.sort((a, b) => a.price - b.price).map((room) => (
+                        <option key={room.id} value={room.id}>{room.name} - ₦{room.price.toLocaleString()}</option>
+                      ))}
                     </select>
                   </div>
 
@@ -579,7 +587,7 @@ export default function App() {
                       The Catalogue
                     </span>
                     <h2 className="font-serif text-3xl font-semibold tracking-tight text-white">
-                      Featured Guest Executive Rooms and Suites
+                      Features Exquisite Guest Rooms
                     </h2>
                   </div>
                   <button
@@ -719,7 +727,7 @@ export default function App() {
                     <Star className="w-4 h-4 fill-current" />
                   </div>
                   <blockquote className="font-serif text-lg md:text-xl text-white/80 italic leading-relaxed">
-                    "Lex Medicina has completely redefined corporate lodging in Abuja. Having uninterrupted high-speed internet and high perimeter defense was excellent, but the elegance of their gold-toned bedroom layout makes stay feeling like a private oasis."
+                      "Lex Medicina has completely redefined corporate lodging in Abuja. Having high perimeter defense, excellence, and the elegance of their gold-toned bedroom layout makes stay feeling like a private oasis."
                   </blockquote>
                   <div>
                     <cite className="font-display text-xs uppercase tracking-wider text-gold-450 font-semibold block not-italic">
@@ -760,26 +768,21 @@ export default function App() {
               {/* DYNAMIC AND COMPLEX VACANCY FILTER BOARD */}
               <section className="bg-[#121212] border border-white/10 p-6 rounded-md shadow-sm space-y-4 text-white">
                 <div className="flex flex-col sm:flex-row gap-4">
-                  {/* Filter A: Category Class */}
+                  {/* Filter A: Select Room */}
                   <div className="flex-1">
                     <label className="block text-[10px] uppercase tracking-widest text-[#d6bb83] font-display mb-1.5 font-bold">
-                      Suite Class
+                      Select Room
                     </label>
-                    <div className="flex flex-wrap gap-2">
-                      {['all', 'executive', 'suite'].map((t) => (
-                        <button
-                          key={t}
-                          onClick={() => setFilterType(t)}
-                          className={`px-4 py-2 text-xs font-display font-semibold uppercase tracking-wider rounded-sm border transition-all cursor-pointer ${
-                            filterType === t 
-                              ? 'bg-gold-500 text-black border-gold-500 shadow-sm font-bold' 
-                              : 'bg-white/5 text-white/70 border-white/10 hover:bg-white/10 hover:text-white'
-                          }`}
-                        >
-                          {t === 'all' ? 'All Classes' : t.toUpperCase()}
-                        </button>
+                    <select
+                      value={filterType}
+                      onChange={(e) => setFilterType(e.target.value)}
+                      className="w-full bg-[#161616] border border-white/10 text-white py-2.5 px-3 text-xs rounded focus:outline-none focus:border-gold-400"
+                    >
+                      <option value="all">All Rooms</option>
+                      {rooms.sort((a, b) => a.price - b.price).map((room) => (
+                        <option key={room.id} value={room.id}>{room.name} - ₦{room.price.toLocaleString()}</option>
                       ))}
-                    </div>
+                    </select>
                   </div>
 
                   {/* Filter B: Minimum Occupants Limit */}
@@ -1038,7 +1041,7 @@ export default function App() {
                         <div>
                           <span className="block font-semibold text-gold-400 font-serif text-sm">Official Physical Address</span>
                           <span className="block mt-1 leading-relaxed text-white/70">
-                            House 36, Claude Ake Street (142 Road), Off Road, Gwarinpa Estate, FCT, Nigeria.
+                            House 36, Claude Ake Street (142 Road), Off 14 Road, Gwarinpa Estate, FCT, Nigeria.
                           </span>
                         </div>
                       </div>

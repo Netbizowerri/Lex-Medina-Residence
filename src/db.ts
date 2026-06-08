@@ -9,7 +9,7 @@ import { Room, Booking, DashboardStats } from './types';
 export const INITIAL_ROOMS: Room[] = [
   {
     id: 'room-1',
-    name: 'Beijing Room',
+    name: 'Beijing',
     type: 'executive',
     price: 25000, // NGN per night
     is_available: true,
@@ -20,7 +20,7 @@ export const INITIAL_ROOMS: Room[] = [
   },
   {
     id: 'room-2',
-    name: 'Las Vegas Room',
+    name: 'Las Vegas',
     type: 'executive',
     price: 25000, // NGN per night
     is_available: true,
@@ -31,9 +31,9 @@ export const INITIAL_ROOMS: Room[] = [
   },
   {
     id: 'room-3',
-    name: 'London Suite',
-    type: 'suite',
-    price: 35000, // NGN per night
+    name: 'London',
+    type: 'executive',
+    price: 30000, // NGN per night
     is_available: true,
     max_guests: 3,
     features: ['High-speed Wi-Fi', 'Smart TV & AC', 'Refrigerator', 'Wide Sitting Space'],
@@ -42,7 +42,7 @@ export const INITIAL_ROOMS: Room[] = [
   },
   {
     id: 'room-4',
-    name: 'Toronto Room',
+    name: 'Toronto',
     type: 'executive',
     price: 25000, // NGN per night
     is_available: true,
@@ -53,7 +53,7 @@ export const INITIAL_ROOMS: Room[] = [
   },
   {
     id: 'room-5',
-    name: 'Belize Room',
+    name: 'Belize',
     type: 'executive',
     price: 25000, // NGN per night
     is_available: true,
@@ -64,9 +64,9 @@ export const INITIAL_ROOMS: Room[] = [
   },
   {
     id: 'room-6',
-    name: 'New York Suite',
+    name: 'New York',
     type: 'suite',
-    price: 40000, // NGN per night
+    price: 35000, // NGN per night
     is_available: true,
     max_guests: 3,
     features: ['High-speed Wi-Fi', 'Smart TV & AC', 'Refrigerator', 'Wide Sitting Space'],

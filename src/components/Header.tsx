@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Menu, X, Landmark, Compass, Key, PhoneCall, HelpCircle, Shield, Briefcase } from 'lucide-react';
+import { Menu, X, Landmark, Compass, PhoneCall } from 'lucide-react';
 
 interface HeaderProps {
   currentTab: string;
@@ -79,20 +79,8 @@ export function Header({ currentTab, setTab, isFirebaseConnected }: HeaderProps)
           })}
         </nav>
 
-        {/* Action Button & Admin Link */}
+        {/* Action Button */}
         <div className="hidden md:flex items-center gap-4">
-          <button
-            onClick={() => setTab(currentTab.startsWith('admin') ? 'home' : 'admin-login')}
-            className={`flex items-center gap-1.5 px-4 py-2 text-xs font-display font-medium tracking-wider uppercase border rounded-md transition-all cursor-pointer ${
-              currentTab.startsWith('admin') 
-                ? 'bg-gold-500 text-black border-gold-500 hover:bg-gold-600'
-                : 'border-gray-250 text-gray-700 bg-gray-50/50 hover:bg-gray-100 hover:text-gold-600 hover:border-gray-300'
-            }`}
-          >
-            <Shield className="w-3.5 h-3.5" />
-            <span>Admin Portal</span>
-          </button>
-
           <button
             onClick={() => setTab('rooms')}
             className="px-5 py-2.5 bg-gold-500 text-black font-display text-xs font-bold tracking-widest uppercase rounded-sm hover:bg-gold-600 hover:shadow-md transition-all cursor-pointer"
@@ -143,16 +131,6 @@ export function Header({ currentTab, setTab, isFirebaseConnected }: HeaderProps)
               );
             })}
             
-            <button
-              onClick={() => {
-                setTab('admin-login');
-                setIsOpen(false);
-              }}
-              className="flex items-center gap-3 py-2.5 text-left text-base font-medium border-b border-gray-100 text-gold-600 hover:text-gold-700 cursor-pointer"
-            >
-              <Shield className="w-5 h-5 text-gold-500" />
-              <span>Administrative Console</span>
-            </button>
           </div>
         </div>
       )}
